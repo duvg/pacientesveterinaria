@@ -11,6 +11,26 @@ class App extends Component {
     citas: []
   }
 
+  // eventos de react
+
+  // cuando la aplicacion carga
+  componentDidMount() {
+    const citasLS = localStorage.getItem('citas');
+    if(citasLS) {
+      this.setState({
+        citas: JSON.parse(citasLS)
+      })
+    }
+  }
+
+  // al agregar o eliminar  una cita
+  componentDidUpdate() {
+    localStorage.setItem('citas', JSON.stringify(this.state.citas));
+  }
+
+  // eventos personalizados
+
+
   crearNuevaCita = datos => {
     // copiar el state actual
     const citas = [...this.state.citas, datos];
