@@ -1,0 +1,124 @@
+import React, { Component } from 'react';
+
+class NuevaCita extends Component {
+    state = {
+        cita : {
+            mascota : '',
+            propietario : '',
+            fecha : '',
+            hora : '',
+            sintomas : ''
+        },
+        error : false
+    }
+    
+    // eventos
+    // obtener los datos del formulario
+    handleChange = e => {
+        console.log(e.target.name + ':' + e.target.value);
+        // Agregar los datos del formulario en el state
+        this.setState({
+            cita: {
+                ...this.state.cita,
+                [e.target.name] : e.target.value
+            }
+        })
+    }
+
+    // manejar el envio del formulario
+    handleSubmit = e => {
+        e.preventDefault();
+
+        // extraer los datos del state
+        const { mascota, propietario, fecha, hora, sintomas } = this.state.cita;
+
+        // validar los campos 
+        if (mascota === '' || propietario === '' || fecha === '' || hora === '' || sintomas === '') {
+            this.setState({
+                error : true
+            });
+
+            return false;
+        }
+
+        // agregar la cita al state de App
+    }
+
+    render() {
+        return(
+            <div className="card mt-5 p-2">
+                <h2 className="card-title text-center mb-5">
+                    Llena el formulario para agendar una cita
+                </h2>
+
+                <form onSubmit={this.handleSubmit}>
+                    <div className="form-group row">
+                        <label htmlFor="" className="col-sm-4 col-lg-2 col-form-label">Nombre Mascota</label>
+                        <div className="col-sm-8 col-lg-10">
+                            <input  
+                                type="text"
+                                className="form-control"
+                                placeholder="Nombre mascota"
+                                name="mascota"
+                                onChange={this.handleChange}
+                                value={this.state.cita.mascota}
+                            /> 
+                        </div> 
+                    </div> {/* form-group */}
+                    <div className="form-group row">
+                        <label htmlFor="" className="col-sm-4 col-lg-2 col-form-label">Nombre Dueño</label>
+                        <div className="col-sm-8 col-lg-10">
+                            <input  
+                                type="text"
+                                className="form-control"
+                                placeholder="Nombre del dueño"
+                                name="propietario"
+                                onChange={this.handleChange}
+                                value={this.state.cita.propietario}
+                            /> 
+                        </div> 
+                    </div> {/* form-group */}
+                    <div className="form-group row">
+                        <label htmlFor="" className="col-sm-4 col-lg-2 col-form-label">Fecha</label>
+                        <div className="col-sm-8 col-lg-4">
+                            <input  
+                                type="date"
+                                className="form-control"
+                                name="fecha"
+                                onChange={this.handleChange}
+                                value={this.state.cita.fecha}
+                            /> 
+                        </div> 
+                    
+                        <label htmlFor="" className="col-sm-4 col-lg-2 col-form-label">Hora</label>
+                        <div className="col-sm-8 col-lg-4">
+                            <input  
+                                type="time"
+                                className="form-control"
+                                name="hora"
+                                onChange={this.handleChange}
+                                value={this.state.cita.hora}
+                            /> 
+                        </div> 
+                    </div> {/* form-group */}
+
+                    <div className="form-group row">
+                        <label htmlFor="" className="col-sm-4 col-lg-2 col-form-label">Sintomas</label>
+                        <div className="col-sm-8 col-lg-10">
+                            <textarea 
+                                className="form-control"
+                                name="sintomas"
+                                palceholder="Describe los sintomas"
+                                onChange={this.handleChange}
+                                value={this.state.cita.sintomas}
+                            ></textarea>
+                        </div> 
+                    </div> {/* form-group */}
+                    <input type="submit" className="btn btn-success py-3 mt-2 btn-block" value="Agendar cita"/>
+                </form>
+            </div>  
+        );
+    };
+}
+
+export default NuevaCita;
