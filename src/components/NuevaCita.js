@@ -1,21 +1,23 @@
 import React, { Component } from 'react';
+import uuid from 'uuid';
+
+const stateInicial = {
+    cita : {
+        mascota : '',
+        propietario : '',
+        fecha : '',
+        hora : '',
+        sintomas : ''
+    },
+    error : false
+}
 
 class NuevaCita extends Component {
-    state = {
-        cita : {
-            mascota : '',
-            propietario : '',
-            fecha : '',
-            hora : '',
-            sintomas : ''
-        },
-        error : false
-    }
+    state = { ...stateInicial }
     
     // eventos
     // obtener los datos del formulario
     handleChange = e => {
-        console.log(e.target.name + ':' + e.target.value);
         // Agregar los datos del formulario en el state
         this.setState({
             cita: {
@@ -41,15 +43,32 @@ class NuevaCita extends Component {
             return false;
         }
 
+        // generar un objeto con los datos
+        const nuevaCita = {...this.state.cita};
+        nuevaCita.id = uuid();
+
         // agregar la cita al state de App
+        this.props.crearNuevaCita(nuevaCita);
+
+        // limpiar el formualario seteando el state con el stateInicial
+        this.setState({
+            ...stateInicial
+        });
     }
 
     render() {
+
+        // extraer el error del state
+        const { error } = this.state;
+
+
         return(
             <div className="card mt-5 p-2">
                 <h2 className="card-title text-center mb-5">
                     Llena el formulario para agendar una cita
                 </h2>
+
+        { error ? <div className="alert alert-danger mt-2 mb-2 text-center">Todos los campos son obligatorios</div> : null}
 
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group row">
